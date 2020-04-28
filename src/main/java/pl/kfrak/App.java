@@ -1,30 +1,36 @@
 package pl.kfrak;
 
 import pl.kfrak.dao.DishDao;
-import pl.kfrak.domain.Dish;
 
-import java.util.Arrays;
-import java.util.Optional;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 
 public class App {
 
-    private static DishDao dishDao;
+        private final String url = "jdbc:postgresql://localhost:5432/MealsOrganizer";
+        private final String user = "postgres";
+        private final String password = "ppp";
 
-    public static void main(String[] args) {
-        dishDao = new DishDao();
+        private DishDao dishDao;
 
-        System.out.println("getAll = " + dishDao.getAll());
 
-        dishDao.delete(0);
-        System.out.println("getAll after deleted 0 = " + dishDao.getAll());
+    public static void main( String[] args ) throws ClassNotFoundException {
+        Class.forName("org.postgresql.Driver");
 
-        dishDao.save(new Dish(4, "kaczka", Arrays.asList("kaczka", "siekiera...")));
-        System.out.println("getAll after added id 4 = " + dishDao.getAll());
+        App app = new App();
+        app.connect();
     }
 
-        private static Dish getDish(int id) {
-            Optional<Dish> dish = dishDao.get(id);
-            return dish.orElseGet(
-                    () -> new Dish(0, "no existing dish", ""));
+    public Connection connect() {
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(url, user, password);
+            System.out.println("Connected to the PostgreSQL server successfully.");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
+        return conn;
+    }
     }
