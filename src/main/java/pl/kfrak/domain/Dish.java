@@ -1,27 +1,34 @@
 package pl.kfrak.domain;
 
-import java.util.List;
+import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "Dish")
 public class Dish {
 
+    //jaka różnica czy sie robi te adnotacje ad id na polach czy na geterach.
+    //Defaultowo hibernate bierze pod uwage adnotacje z pól
+    @Id
+    @GeneratedValue(generator = "incr")
+    @GenericGenerator(name = "incr", strategy = "increment")
     private Integer id;
     private String name;
-    private List<String> ingredients;
+    private String ingredients;
 
-    public Dish(Integer id, String name, List<String> ingredients) {
+    public Dish(Integer id, String name, String ingredients) {
         this.id = id;
         this.name = name;
         this.ingredients = ingredients;
     }
 
-    public Dish(Integer id, String name, String s) {
-    }
-
-    @Override
-    public String toString() {
-        return "Dish id = " + id +
-                ", name = " + name + '\'' +
-                ", ingredients = " + ingredients;
+    /** Hibernate needs it */
+    @SuppressWarnings("unused")
+    Dish() {
     }
 
     public Integer getId() {
@@ -40,11 +47,19 @@ public class Dish {
         this.name = name;
     }
 
-    public List<String> getIngredients() {
+    public String getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(List<String> ingredients) {
+    public void setIngredients(String ingredients) {
         this.ingredients = ingredients;
     }
+
+    @Override
+    public String toString() {
+        return "Dish id = " + id +
+                ", name = " + name + '\'' +
+                ", ingredients = " + ingredients;
+    }
+
 }

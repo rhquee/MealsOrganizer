@@ -1,15 +1,14 @@
 package pl.kfrak.dao;
 
-import java.util.List;
 import java.util.Optional;
 
-public interface Dao<T> {
+interface Dao<T> {
 
-    Optional<T> get(int id);
+    Optional<T> get(Integer id);
 
-    List<T> getAll();
+    String getAll();
 
-    void save(T t);
+    void insert(T t);
 
     void delete(int id);
 
